@@ -1,0 +1,78 @@
+* {
+    font-family: 'Manrope', sans-serif;
+}
+
+body {
+    background-color: rgba(236, 240, 241, 1.0);
+}
+
+.container {
+    width: 60vw;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+    font-weight: 200;
+    font-size: 4rem;
+    margin: 0.5rem 0 0 0;
+}
+
+h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin: 0 0 0.5rem 0;
+}
+
+nav {
+    text-align: center;
+    color: rgba(52, 152, 219, 1.0);
+    font-size: 1.8rem;
+}
+
+a, a:visited {
+    color: rgba(52, 152, 219, 1.0);
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+main {
+    margin-top: 20px;
+}
+
+#menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+}
+
+.product-box {
+    background-color: #ffe;
+    padding: 5px;
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+.myForm {
+
+}
+
+.form-group {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-column-gap: 10px;
+    height: 3rem;
+}
+
+.form-label {
+    font-weight: bolder;
+}
+input {
+    width: 100%;
+    border-radius: 5px;
+    height: 2rem;
+}

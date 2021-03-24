@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}menu{% endblock %}
+
+{% block pageheading %}Menu{% endblock %}
+
+{% block main %}
+{#    {{ products }}#}
+        <div id="menu">
+            {% for product in products %}
+            <div class="product-box">
+                <h3>{{ product[0] }}</h3>
+                <p>{{ product[1] }}</p>
+                <p><strong>Volume: </strong>{{ product[2] }}</p>
+                <p><strong>Price: </strong>${{ product[4] }}</p>
+                <p><img src="static/images/{{ product[3] }}.jpg"</p>
+            </div>
+            {% endfor %}
+        </div>
+{% endblock %}
