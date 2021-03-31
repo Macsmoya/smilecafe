@@ -5,6 +5,7 @@ from sqlite3 import Error
 DB_NAME = "smile.db"
 
 app = Flask(__name__)
+app.secret_key = "kzdjflawyrtp9v8awto;micstawnt;ihtg"
 
 def create_connection(db_file):
     # Creates a connection to the database
@@ -40,14 +41,50 @@ def render_menu():
 
 @app.route('/login')
 def render_login():
+    if request.method == "POST":
+        email = request.form['email'].strip().lower()
+        password = request.form['password'].strip()
+
+        query = "SELECT id, fname, password FROM customers WHERE email = ?"
+        # Create the connection
+        con = create_connection(DB_NAME)
+        cur = con.cursor()
+        cur.execute(query, (email))
+        user_data = cur.fetchall()
+        con.close()
+
+        # If the email address is in the database, the user_data
+        # will hold the information we need.
+
+        try:
+            userid = user_data[0][0]
+            first_name = user_data[0][1]
+            db_password = user_data[0][2]
+        except IndexError:
+            return redirect("/login?error=Email+address+or+password+incorrect")
+
+        # Check if the password is correct or not
+        if password != db_password:
+            return redirect("/login?error=Email+address+or+password+incorrect")
+
+        # Set up a session and store some useful data
+        session['email'] = email
+        session['userid'] = userid
+        session['first_name'] = first_name
+        print(session)
+        return redirect('/')
+    return render_template('login.html', logged_in = is_logged_in())
+
+
+
     return render_template('login.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def render_signup():
     if request.method == 'POST':
-        fname = request.form.get('fname')
-        lname = request.form.get('lname')
-        email = request.form.get('email')
+        fname = request.form.get('fname').strip().title()
+        lname = request.form.get('lname').strip().title()
+        email = request.form.get('email').strip().lower()
         password = request.form.get('password')
         password2 = request.form.get('password2')
 
@@ -64,9 +101,13 @@ def render_signup():
         query = "INSERT INTO customers (id, fname, lname, email, password) VALUES (null, ?, ?, ?, ?)"
 
         cur = con.cursor()
-        cur.execute(query, (fname, lname, email, password))
+        try:
+            cur.execute(query, (fname, lname, email, password))
+        except sqlite3.IntegrityError:
+            return redirect('/signup?error=Email+address+already+in+use.')
         con.commit()
         con.close()
+        return redirect("/login")
 
     return render_template('signup.html')
 
