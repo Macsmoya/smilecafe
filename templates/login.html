@@ -5,15 +5,15 @@
 {% block pageheading %}Log in{% endblock %}
 
 {% block main %}
-    <form class="myForm">
+    <form class="myForm" method="POST">
         <div class="form-group">
             <div class="form-label"><label for="email">Email Address:</label></div>
-            <div class="form-element"><input type="email" required></div>
+            <div class="form-element"><input name="email" id="email" type="email" required></div>
         </div>
 
         <div class="form-group">
             <div class="form-label"><label for="password">Password:</label></div>
-            <div class="form-element"><input type="password"></div>
+            <div class="form-element"><input name="password" id="password" type="password"></div>
         </div>
 
         <div class="form-group">
