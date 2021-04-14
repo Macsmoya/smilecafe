@@ -6,6 +6,14 @@
 
 {% block main %}
 {#    {{ products }}#}
+        <div id="cat_menu">
+            {% for category in categories %}
+                <a href="/menu/{{ category[0] }}">
+                    {{ category[1] }}
+                </a>
+            {% endfor %}
+        </div>
+
         <div id="menu">
             {% for product in products %}
             <div class="product-box">
@@ -13,8 +21,42 @@
                 <p>{{ product[1] }}</p>
                 <p><strong>Volume: </strong>{{ product[2] }}</p>
                 <p><strong>Price: </strong>${{ product[4] }}</p>
-                <p><img src="static/images/{{ product[3] }}.jpg"</p>
+                <p><img src="/static/images/{{ product[3] }}.jpg" alt="{{ product[3] }}"></p>
             </div>
             {% endfor %}
         </div>
+
+        {% if logged_in %}
+        <form class="myForm" method="post">
+            <div class="form-group">
+                <div class="form-label"><label for="name">Product Name:</label></div>
+                <div class="form-element"><input type="text" name="name" id="name" required></div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-label"><label for="description">Description:</label></div>
+                <div class="form-element"><input type="text" name="description" id="description" required></div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-label"><label for="volume">Volume:</label></div>
+                <div class="form-element"><input type="text" name="volume" id="volume" required></div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-label"><label for="price">Price:</label></div>
+                <div class="form-element"><input type="number" name="price" id="price" min="0" value="0" step="0.10" required></div>
+            </div>
+
+            <div class="form-group">
+                <div></div>
+                <div class="form-element"><input type="reset"></div>
+            </div>
+
+            <div class="form-group">
+                <div></div>
+                <div class="form-element"><input type="submit"></div>
+            </div>
+        </form>
+        {% endif %}
 {% endblock %}

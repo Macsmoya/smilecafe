@@ -22,37 +22,78 @@ def create_connection(db_file):
     return None
 
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def render_homepage():
+    if request.method == "POST" and is_logged_in():
+        catName = request.form['catName'].strip().title()
+        if len(catName) < 3:
+            return redirect("/?error=Name+must+be+at+least+3+letters+long.")
+        else:
+            # connect to the database
+            con = create_connection(DB_NAME)
+
+            query = "INSERT INTO categories (id, cat_name) VALUES(NULL, ?)"
+
+            cur = con.cursor()  # You need this line next
+            try:
+                cur.execute(query, (catName, ))  # this line actually executes the query
+            except:
+                return redirect('/menu?error=Unknown+error')
+
+            con.commit()
+            con.close()
+
     return render_template('home.html', logged_in=is_logged_in())
 
 
-@app.route('/menu')
-def render_menu_page():
+@app.route('/menu/<catID>', methods=["GET", "POST"])
+def render_menu_page(catID):
+    if request.method == "POST" and is_logged_in():
+        name = request.form['name'].strip().title()
+        description = request.form['description'].strip()
+        volume = request.form['volume'].strip()
+        price = request.form['price']
+
+        if len(name) < 3:
+            return redirect("/menu?error=Name+must+be+at+least+3+letters+long.")
+        elif len(description) < 10:
+            return redirect("/menu?error=Description+must+be+at+least+10+letters+long.")
+        elif len(volume) < 3:
+            return redirect("/menu?error=Volume+must+be+at+least+3+letters+long.")
+        else:
+            # connect to the database
+            con = create_connection(DB_NAME)
+
+            query = "INSERT INTO products (id, name, description, volume, image, price, catID) " \
+                "VALUES(NULL, ?, ?, ?, 'noimage', ?,?)"
+
+            cur = con.cursor()  # You need this line next
+            try:
+                cur.execute(query, (name, description, volume, price, catID))  # this line actually executes the query
+            except:
+                return redirect('/menu?error=Unknown+error')
+
+            con.commit()
+            con.close()
+
     # connect to the database
     con = create_connection(DB_NAME)
+    query = "SELECT id, cat_name FROM categories"
+    cur = con.cursor()  # You need this line next
+    cur.execute(query)  # this line actually executes the query
+    category_list = cur.fetchall()  # puts the results into a list usable in python
 
     # SELECT the things you want from your table(s)
     query = "SELECT name, description, volume, image, price, id " \
-            "FROM products"
+            "FROM products WHERE catID=?"
 
     cur = con.cursor()  # You need this line next
-    cur.execute(query)  # this line actually executes the query
+    cur.execute(query, (catID, ))  # this line actually executes the query
     product_list = cur.fetchall()  # puts the results into a list usable in python
     con.close()
 
-    return render_template('menu.html', products=product_list, logged_in=is_logged_in())
+    return render_template('menu.html', products=product_list, categories=category_list, logged_in=is_logged_in())
 
-
-@app.route('/addtocart/<productid>')
-def addtocart(productid):
-    return redirect(request.referrer)
-
-
-# @app.route('/cart')
-# def render_cart():
-#     return render_template('cart.html', cart_items=cart_items, logged_in=is_logged_in())
-#
 
 @app.route('/contact')
 def render_contact_page():

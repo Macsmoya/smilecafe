@@ -6,4 +6,17 @@
 
 {% block main %}
     <p>Welcome to the Smile Cafe</p>
+
+    {% if logged_in %}
+    <form class="myForm" method="post">
+        <div class="form-group">
+            <div class="form-label"><label for="catName">Product Name:</label></div>
+            <div class="form-element"><input type="text" name="catName" id="catName" required></div>
+        </div>
+        <div class="form-group">
+            <div></div>
+            <div class="form-element"><input type="submit"></div>
+        </div>
+    </form>
+        {% endif %}
 {% endblock %}
