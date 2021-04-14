@@ -78,14 +78,14 @@ def render_menu_page(catID):
 
     # connect to the database
     con = create_connection(DB_NAME)
-    query = "SELECT id, cat_name FROM categories"
+    query = "SELECT id, cat_name FROM categories ORDER BY cat_name ASC"
     cur = con.cursor()  # You need this line next
     cur.execute(query)  # this line actually executes the query
     category_list = cur.fetchall()  # puts the results into a list usable in python
 
     # SELECT the things you want from your table(s)
     query = "SELECT name, description, volume, image, price, id " \
-            "FROM products WHERE catID=?"
+            "FROM products WHERE catID=? ORDER BY name ASC"
 
     cur = con.cursor()  # You need this line next
     cur.execute(query, (catID, ))  # this line actually executes the query

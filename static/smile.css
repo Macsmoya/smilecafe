@@ -6,11 +6,6 @@ body {
     background-color: rgba(236, 240, 241, 1.0);
 }
 
-.container {
-    width: 60vw;
-    margin: auto;
-}
-
 h1 {
     text-align: center;
     font-weight: 200;
@@ -43,12 +38,7 @@ main {
     margin-top: 20px;
 }
 
-#menu {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-column-gap: 10px;
-    grid-row-gap: 10px;
-}
+
 
 .product-box {
     background-color: #ffe;
@@ -75,4 +65,40 @@ input {
     width: 100%;
     border-radius: 5px;
     height: 2rem;
+}
+
+#cat_menu {
+    text-align: center;
+    font-size: 1.5em;
+    margin: 20px;
+}
+
+#cat_menu a {
+    background-color: #666;
+    color: #ddd;
+    padding: 5px;
+    margin: 10px 20px;
+    border: 2px solid #000;
+    border-radius: 20px;
+}
+
+cat_menu a:hover {
+    color: #000;
+    background-color: #ccc;
+}
+
+@media only screen and (min-width: 768px) {
+    .container {
+        width: 60vw;
+        margin: auto;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    #menu {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-column-gap: 10px;
+        grid-row-gap: 10px;
+    }
 }
